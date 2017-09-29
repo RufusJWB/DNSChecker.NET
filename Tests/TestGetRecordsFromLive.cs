@@ -107,7 +107,7 @@ namespace Tests
         [InlineData("www.siemens.net")]
         [InlineData("expired.caatestsuite-dnssec.com")] // Tests rejection when there is no CAA record but the DNSSEC signatures are expired
         [InlineData("missing.caatestsuite-dnssec.com")] // Tests rejection when there is no CAA record but the DNSSEC signatures are missing
-                                                        ////[InlineData("blackhole.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a nonresponsive name server
+        ////[InlineData("blackhole.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a nonresponsive name server
         [InlineData("servfail.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a name server returning SERVFAIL
         [InlineData("refused.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a name server returning REFUSED
         public void TestGetSOARecordException(string domain)

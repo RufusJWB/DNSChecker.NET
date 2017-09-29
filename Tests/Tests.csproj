@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="TestGetRecordsFromLive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCAAFromLive.cs" />
+    <Compile Include="TestSOAFromLive.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

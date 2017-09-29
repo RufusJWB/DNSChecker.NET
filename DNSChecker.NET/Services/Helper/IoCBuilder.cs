@@ -1,7 +1,4 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DNSChecker.NET.Services.Helper
 {
@@ -14,7 +11,7 @@ namespace DNSChecker.NET.Services.Helper
             builder.RegisterInstance(lookupClient).As<DnsClient.ILookupClient>().SingleInstance();
 
             builder.RegisterType<DNSWalker.DNSWalker>().AsImplementedInterfaces();
-            ////builder.RegisterType<Checker.Checker>().AsImplementedInterfaces();
+            builder.RegisterType<Checker.Checker>().AsImplementedInterfaces();
 
             var Container = builder.Build();
             return Container;

@@ -70,6 +70,7 @@ namespace DNSChecker.NET.Services.DNSWalker
                 return searchedRecord;
             }
 
+            // todo: Restrict amount of redirects
             ////// If A(X) is not null, and CAA(A(X)) is not empty, then R(X) = CAA(A(X)), otherwise
             ////result = LookupClient.Query(query, QueryType.CNAME);
             ////if (result.HasError)
