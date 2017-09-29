@@ -7,7 +7,12 @@ namespace Tests
     {
         [Theory]
         [InlineData("www.siemens.com", new object[] { "pki.siemens.com" })]
+        [InlineData("www.siemens.com", new object[] { "letsencrypt.org" })]
         [InlineData("www.siemens.co.jp", new object[] { "pki.siemens.com" })]
+        [InlineData("www.siemens.co.jp", new object[] { "letsencrypt.org" })]
+        [InlineData("www.siemens.no", new object[] { "pki.siemens.com" })]
+        [InlineData("www.siemens.no", new object[] { "letsencrypt.org" })]
+
         [InlineData("deny.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of 0 issue "caatestsuite.com"
         ////[InlineData("big.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
         [InlineData("sub1.deny.basic.caatestsuite.com", new object[] { "caatestsuite.com" })]  // Tests basic tree climbing, when CAA record exists at parent
@@ -20,7 +25,10 @@ namespace Tests
         [InlineData("ipv6only.caatestsuite.com", new object[] { "caatestsuite.com" })]  // Tests proper processing of CAA record at an IPv6-only authoritative name server
 
         [InlineData("www.google.com", new object[] { "pki.goog" })]
+
+        // based on https://www.golem.de/news/tls-zertifikate-zertifizierungsstellen-muessen-caa-records-pruefen-1709-129981-2.html
         [InlineData("cmc.tlsfun.de", new object[] { "letsencrypt.org" })]
+
         public void TestCAAOkay(string domain, string[] allowedCAAs)
         {
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
@@ -63,7 +71,16 @@ namespace Tests
         [InlineData("sir.cio.siemens.com", new object[] { "pki.siemens.com" })] // No CAA record set, but server doesn't exists
 
         [InlineData("*.google.com", new object[] { "pki.goog" })]
+
+        // based on https://www.golem.de/news/tls-zertifikate-zertifizierungsstellen-muessen-caa-records-pruefen-1709-129981-2.html
         [InlineData("cmc.tlsfun.de", new object[] { "pki.goog" })]
+
+        // based on https://github.com/quirins/caa-test
+        [InlineData("db.crossbear.net", new object[] { "pki.goog" })]
+        [InlineData("db.crossbear.org", new object[] { "pki.goog" })]
+        [InlineData("db.measr.net", new object[] { "pki.goog" })]
+        [InlineData("db.measr.net", new object[] { "letsencrypt.org" })]
+        [InlineData("db.perenaster.com", new object[] { "pki.goog" })]
         public void TestCAAForbidden(string domain, string[] allowedCAAs)
         {
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());

@@ -9,6 +9,13 @@ namespace Tests
         [InlineData("www.siemens.com", new object[] { "siemens.com", "siemens.net", "siemens.de" })]
         [InlineData("www.siemens.co.jp", new object[] { "siemens.com", "siemens.net", "siemens.de" })]
         [InlineData("critical1.basic.caatestsuite.com", new object[] { "caatestsuite.com" })]
+
+        // based on https://github.com/quirins/caa-test
+        [InlineData("db.crossbear.net", new object[] { "linode.com" })]
+        [InlineData("db.crossbear.org", new object[] { "linode.com" })]
+        [InlineData("db.measr.net", new object[] { "linode.com" })]
+        [InlineData("db.perenaster.com", new object[] { "linode.com" })]
+
         public void TestSOAOkay(string domain, string[] allowedSOAs)
         {
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
@@ -27,6 +34,13 @@ namespace Tests
         [InlineData("critical1.basic.caatestsuite.com", new object[] { "siemens.com", "siemens.net", "siemens.de" })] // Not Siemens at all
         [InlineData("missing.caatestsuite-dnssec.com", new object[] { "siemens.com", "siemens.net", "siemens.de" })] // Problem with DNSSec
         [InlineData("www.siemens.no", new object[] { "siemens.com", "siemens.net", "siemens.de" })] // Hosted at Telenor
+
+        // based on https://github.com/quirins/caa-test
+        [InlineData("db.crossbear.net", new object[] { "siemens.com", "siemens.net", "siemens.de" })]
+        [InlineData("db.crossbear.org", new object[] { "siemens.com", "siemens.net", "siemens.de" })]
+        [InlineData("db.measr.net", new object[] { "siemens.com", "siemens.net", "siemens.de" })]
+        [InlineData("db.perenaster.com", new object[] { "siemens.com", "siemens.net", "siemens.de" })]
+
         public void TestSOANotOkay(string domain, string[] allowedSOAs)
         {
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());

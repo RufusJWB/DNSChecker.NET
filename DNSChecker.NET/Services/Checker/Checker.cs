@@ -23,7 +23,7 @@ namespace DNSChecker.NET.Services.Checker
                 records = DNSWalker.WalkUp<DnsClient.Protocol.CaaRecord>(domain);
             }
             // Be conservative. If there is an error, return false
-            catch
+            catch (System.Exception ex)
             {
                 return false;
             }
@@ -86,7 +86,7 @@ namespace DNSChecker.NET.Services.Checker
                 records = DNSWalker.WalkUp<DnsClient.Protocol.SoaRecord>(domain);
             }
             // Be conservative. If there is an error, return false
-            catch
+            catch (System.Exception ex)
             {
                 return false;
             }
