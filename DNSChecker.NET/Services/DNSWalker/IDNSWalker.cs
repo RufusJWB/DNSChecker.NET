@@ -1,12 +1,9 @@
-﻿using DnsClient;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DNSChecker.NET.Services.DNSWalker
 {
     public interface IDNSWalker
     {
-        IEnumerable<DnsClient.Protocol.DnsResourceRecord> WalkUp(string query, DnsClient.Protocol.ResourceRecordType resourceRecordType);
+        IEnumerable<T> WalkUp<T>(string domain) where T : DnsClient.Protocol.DnsResourceRecord;
     }
 }

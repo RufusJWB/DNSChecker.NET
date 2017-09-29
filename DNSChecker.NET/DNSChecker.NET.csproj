@@ -12,4 +12,10 @@
     <ProjectReference Include="..\..\DnsClient.NET\src\DnsClient\DnsClient.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="tlds-alpha-by-domain.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

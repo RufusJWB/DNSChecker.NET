@@ -1,6 +1,7 @@
 ﻿using DnsClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace DNSChecker.NET.Services.DNSWalker
@@ -9,7 +10,7 @@ namespace DNSChecker.NET.Services.DNSWalker
     {
         static DNSWalker()
         {
-            TLDList = new[] { "com", "net", "de" };
+            TLDList = File.ReadAllLines("tlds-alpha-by-domain.txt");
         }
 
         private DnsClient.ILookupClient LookupClient;
@@ -21,26 +22,42 @@ namespace DNSChecker.NET.Services.DNSWalker
 
         private static string[] TLDList;
 
-        public IEnumerable<DnsClient.Protocol.DnsResourceRecord> WalkUp(string query, DnsClient.Protocol.ResourceRecordType resourceRecordType)
+        public IEnumerable<T> WalkUp<T>(string domain) where T : DnsClient.Protocol.DnsResourceRecord
         {
-            if (string.IsNullOrWhiteSpace(query))
+            if (string.IsNullOrWhiteSpace(domain))
             {
-                throw new ArgumentNullException(nameof(query));
+                throw new ArgumentNullException(nameof(domain));
             }
 
             // Fix wildcard domains
-            if (query.StartsWith("*."))
+            if (domain.StartsWith("*."))
             {
-                query = query.Substring(2);
+                domain = domain.Substring(2);
             }
 
-            var result = LookupClient.Query(query, (QueryType)resourceRecordType);
+            QueryType queryType = 0;
+
+            switch (typeof(T).Name)
+            {
+                case nameof(DnsClient.Protocol.CaaRecord):
+                    queryType = QueryType.CAA;
+                    break;
+
+                case nameof(DnsClient.Protocol.SoaRecord):
+                    queryType = QueryType.SOA;
+                    break;
+
+                default:
+                    throw new NotImplementedException($"{typeof(T).Name} is not supported");
+            }
+
+            var result = LookupClient.Query(domain, queryType);
             if (result.HasError)
             {
                 throw new InvalidOperationException(result.ErrorMessage);
             }
 
-            var searchedRecord = result.Answers.OfRecordType(resourceRecordType);
+            var searchedRecord = result.Answers.OfType<T>();
 
             // Let CAA(X) be the record set returned in response to performing a CAA record query on
             // the label X, P(X) be the DNS label immediately above X in the DNS hierarchy, and A(X)
@@ -66,14 +83,14 @@ namespace DNSChecker.NET.Services.DNSWalker
             ////}
 
             // If X is not a top - level domain, then R(X) = R(P(X)), otherwise
-            if (!TLDList.Contains(query))
+            if (!TLDList.Contains(domain.ToUpper()))
             {
-                query = query.Substring(query.IndexOf(".") + 1);
-                return WalkUp(query, resourceRecordType);
+                domain = domain.Substring(domain.IndexOf(".") + 1);
+                return WalkUp<T>(domain);
             }
 
             // R(X) is empty.
-            return Enumerable.Empty<DnsClient.Protocol.DnsResourceRecord>();
+            return Enumerable.Empty<T>();
         }
     }
 }

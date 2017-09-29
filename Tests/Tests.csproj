@@ -66,9 +66,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="CAALiveTests.cs" />
-    <Compile Include="CAATestSuiteData.cs" />
-    <Compile Include="Labeled.cs" />
+    <Compile Include="TestGetRecordsFromLive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
