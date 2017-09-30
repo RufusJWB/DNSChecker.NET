@@ -10,7 +10,7 @@ namespace Tests
         [Theory]
         [InlineData("empty.basic.caatestsuite.com")] // Tests proper processing of 0 issue ";"
         [InlineData("deny.basic.caatestsuite.com")] // Tests proper processing of 0 issue "caatestsuite.com"
-        ////[InlineData("big.basic.caatestsuite.com")] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
+        [InlineData("big.basic.caatestsuite.com")] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
         [InlineData("critical1.basic.caatestsuite.com")] // Tests proper processing of an unknown critical property: 128 caatestsuitedummyproperty "test"
         [InlineData("critical2.basic.caatestsuite.com")] // Tests proper processing of an unknown critical property when another flag is set: 130 caatestsuitedummyproperty "test"
         [InlineData("sub1.deny.basic.caatestsuite.com")] // Tests basic tree climbing, when CAA record exists at parent
@@ -81,7 +81,7 @@ namespace Tests
         [InlineData("siemens.net")]
         [InlineData("empty.basic.caatestsuite.com")] // Tests proper processing of 0 issue ";"
         [InlineData("deny.basic.caatestsuite.com")] // Tests proper processing of 0 issue "caatestsuite.com"
-                                                    ////[InlineData("big.basic.caatestsuite.com")] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
+        [InlineData("big.basic.caatestsuite.com")] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
         [InlineData("critical1.basic.caatestsuite.com")] // Tests proper processing of an unknown critical property: 128 caatestsuitedummyproperty "test"
         [InlineData("critical2.basic.caatestsuite.com")] // Tests proper processing of an unknown critical property when another flag is set: 130 caatestsuitedummyproperty "test"
         [InlineData("sub1.deny.basic.caatestsuite.com")] // Tests basic tree climbing, when CAA record exists at parent

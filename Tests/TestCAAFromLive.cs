@@ -13,9 +13,10 @@ namespace Tests
         [InlineData("www.siemens.no", new object[] { "pki.siemens.com" })]
         [InlineData("www.siemens.no", new object[] { "letsencrypt.org" })]
         [InlineData("sir.cio.siemens.com", new object[] { "pki.siemens.com" })]
+        [InlineData("sir.cio.siemens.com", new object[] { "letsencrypt.org" })]
 
         [InlineData("deny.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of 0 issue "caatestsuite.com"
-        ////[InlineData("big.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
+        [InlineData("big.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
         [InlineData("sub1.deny.basic.caatestsuite.com", new object[] { "caatestsuite.com" })]  // Tests basic tree climbing, when CAA record exists at parent
         [InlineData("sub2.sub1.deny.basic.caatestsuite.com", new object[] { "caatestsuite.com" })]  // Tests basic tree climbing, when CAA record exists at grandparent
         [InlineData("*.deny-wild.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper application of issuewild property to a wildcard FQDN
@@ -47,7 +48,7 @@ namespace Tests
         [InlineData("empty.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of 0 issue ";"
         [InlineData("empty.basic.caatestsuite.com", new object[] { "pki.siemens.com" })] // Tests proper processing of 0 issue ";"
         [InlineData("deny.basic.caatestsuite.com", new object[] { "pki.siemens.com" })] // Tests proper processing of 0 issue "caatestsuite.com"
-        ////[InlineData("big.basic.caatestsuite.com", new object[] { "pki.siemens.com" })] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
+        [InlineData("big.basic.caatestsuite.com", new object[] { "pki.siemens.com" })] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
         [InlineData("critical1.basic.caatestsuite.com", new object[] { "pki.siemens.com" })]  // Tests proper processing of an unknown critical property: 128 caatestsuitedummyproperty "test"
         [InlineData("critical2.basic.caatestsuite.com", new object[] { "pki.siemens.com" })]  // Tests proper processing of an unknown critical property when another flag is set: 130 caatestsuitedummyproperty "test"
         [InlineData("critical1.basic.caatestsuite.com", new object[] { "caatestsuite.com" })]  // Tests proper processing of an unknown critical property: 128 caatestsuitedummyproperty "test"
