@@ -24,6 +24,19 @@ namespace DNSChecker.NET.Services.DNSWalker
 
         public IEnumerable<T> WalkUp<T>(string domain) where T : DnsClient.Protocol.DnsResourceRecord
         {
+            IEnumerable<T> ClimbUp()
+            {
+                // If X is not a top - level domain, then R(X) = R(P(X)), otherwise
+                if (!TLDList.Contains(domain.ToUpper()))
+                {
+                    string recursionDomain = domain.Substring(domain.IndexOf(".") + 1);
+                    return WalkUp<T>(recursionDomain);
+                }
+
+                // R(X) is empty.
+                return Enumerable.Empty<T>();
+            }
+
             if (string.IsNullOrWhiteSpace(domain))
             {
                 throw new ArgumentNullException(nameof(domain));
@@ -54,7 +67,14 @@ namespace DNSChecker.NET.Services.DNSWalker
             var result = LookupClient.Query(domain, queryType);
             if (result.HasError)
             {
-                throw new InvalidOperationException(result.ErrorMessage);
+                if (result.ErrorMessage.Equals("Non-Existent Domain"))
+                {
+                    return ClimbUp();
+                }
+                else
+                {
+                    throw new InvalidOperationException(result.ErrorMessage);
+                }
             }
 
             var searchedRecord = result.Answers.OfType<T>();
@@ -83,15 +103,7 @@ namespace DNSChecker.NET.Services.DNSWalker
             ////    WalkUp(cnameRecord.CanonicalName, resourceRecordType);
             ////}
 
-            // If X is not a top - level domain, then R(X) = R(P(X)), otherwise
-            if (!TLDList.Contains(domain.ToUpper()))
-            {
-                domain = domain.Substring(domain.IndexOf(".") + 1);
-                return WalkUp<T>(domain);
-            }
-
-            // R(X) is empty.
-            return Enumerable.Empty<T>();
+            return ClimbUp();
         }
     }
 }

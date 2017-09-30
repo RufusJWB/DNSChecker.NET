@@ -12,6 +12,7 @@ namespace Tests
         [InlineData("www.siemens.co.jp", new object[] { "letsencrypt.org" })]
         [InlineData("www.siemens.no", new object[] { "pki.siemens.com" })]
         [InlineData("www.siemens.no", new object[] { "letsencrypt.org" })]
+        [InlineData("sir.cio.siemens.com", new object[] { "pki.siemens.com" })]
 
         [InlineData("deny.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of 0 issue "caatestsuite.com"
         ////[InlineData("big.basic.caatestsuite.com", new object[] { "caatestsuite.com" })] // Tests proper processing of gigantic CAA record set (1001 records) containing 0 issue "caatestsuite.com"
@@ -68,7 +69,6 @@ namespace Tests
                                                                                             //// [InlineData("blackhole.caatestsuite-dnssec.com", new object[] { "pki.siemens.com" })] // Tests rejection when there is a DNSSEC validation chain to a nonresponsive name server
         [InlineData("servfail.caatestsuite-dnssec.com", new object[] { "pki.siemens.com" })] // Tests rejection when there is a DNSSEC validation chain to a name server returning SERVFAIL
         [InlineData("refused.caatestsuite-dnssec.com", new object[] { "pki.siemens.com" })] // Tests rejection when there is a DNSSEC validation chain to a name server returning REFUSED
-        [InlineData("sir.cio.siemens.com", new object[] { "pki.siemens.com" })] // No CAA record set, but server doesn't exists
 
         [InlineData("*.google.com", new object[] { "pki.goog" })]
 

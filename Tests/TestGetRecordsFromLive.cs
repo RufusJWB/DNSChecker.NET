@@ -37,7 +37,6 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("sir.cio.siemens.com")] // No CAA record set, but server doesn't exists
         [InlineData("expired.caatestsuite-dnssec.com")] // Tests rejection when there is no CAA record but the DNSSEC signatures are expired
         [InlineData("missing.caatestsuite-dnssec.com")] // Tests rejection when there is no CAA record but the DNSSEC signatures are missing
                                                         //// [InlineData("blackhole.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a nonresponsive name server
@@ -55,6 +54,7 @@ namespace Tests
         }
 
         [Theory]
+        [InlineData("sir.cio.siemens.com")] // No CAA record set
         [InlineData("www.siemens.com")] // No CAA record set
         public void TestNoCAARecord(string domain)
         {
@@ -70,6 +70,11 @@ namespace Tests
         }
 
         [Theory]
+        // based on https://github.com/quirins/caa-test
+        [InlineData("db.crossbear.net")]
+        [InlineData("db.crossbear.org")]
+        [InlineData("db.measr.net")]
+        [InlineData("db.perenaster.com")]
         [InlineData("www.siemens.com")]
         [InlineData("www.siemens.no")]
         [InlineData("www.siemens.co.jp")]
@@ -89,6 +94,8 @@ namespace Tests
         [InlineData("deny.permit.basic.caatestsuite.com")] // Tests proper rejection when parent name (permit.basic.caatestsuite.com) contains a permissible CAA record set
         [InlineData("ipv6only.caatestsuite.com")] // Tests proper processing of CAA record at an IPv6-only authoritative name server
         [InlineData("xss.caatestsuite.com")] // Tests rejection when the issue property contains HTML and JavaScript. Makes sure there are no XSS vulnerabilities in the CA's website.
+        [InlineData("sir.cio.siemens.com")]
+        [InlineData("www.siemens.net")]
         public void TestGetSOARecord(string domain)
         {
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
@@ -103,8 +110,6 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("sir.cio.siemens.com")]
-        [InlineData("www.siemens.net")]
         [InlineData("expired.caatestsuite-dnssec.com")] // Tests rejection when there is no CAA record but the DNSSEC signatures are expired
         [InlineData("missing.caatestsuite-dnssec.com")] // Tests rejection when there is no CAA record but the DNSSEC signatures are missing
         ////[InlineData("blackhole.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a nonresponsive name server

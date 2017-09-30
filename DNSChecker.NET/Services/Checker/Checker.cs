@@ -55,9 +55,11 @@ namespace DNSChecker.NET.Services.Checker
             foreach (string allowedIssuer in allowedIssuers)
             {
                 string allowedIssuerDomain = string.Empty;
+                string[] splittedAllowedIssuer = null;
                 if (allowedIssuer.Contains(";"))
                 {
-                    allowedIssuerDomain = allowedIssuer.Split(new string[] { ";" }, StringSplitOptions.None)[0];
+                    splittedAllowedIssuer = allowedIssuer.Split(new string[] { ";" }, StringSplitOptions.None);
+                    allowedIssuerDomain = splittedAllowedIssuer[0];
                 }
                 else
                 {
@@ -66,10 +68,23 @@ namespace DNSChecker.NET.Services.Checker
 
                 if (acceptableValues.Contains(allowedIssuerDomain))
                 {
-                    return true;
+                    if (splittedAllowedIssuer == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return ProcessAdditionalParameters(splittedAllowedIssuer);
+                    }
                 }
             }
             return false;
+        }
+
+        private bool ProcessAdditionalParameters(string[] splittedAllowedIssuer)
+        {
+            // todo: Process additional paramaters
+            return true;
         }
 
         private bool CanProcessFlag(IEnumerable<CaaRecord> enumerable)
