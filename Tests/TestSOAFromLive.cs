@@ -19,7 +19,11 @@ namespace Tests
 
         public void TestSOAOkay(string domain, string[] allowedSOAs)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+           ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -43,7 +47,11 @@ namespace Tests
 
         public void TestSOANotOkay(string domain, string[] allowedSOAs)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+           ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {

@@ -33,7 +33,11 @@ namespace Tests
 
         public void TestCAAOkay(string domain, string[] allowedCAAs)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -84,7 +88,11 @@ namespace Tests
         [InlineData("db.perenaster.com", new object[] { "pki.goog" })]
         public void TestCAAForbidden(string domain, string[] allowedCAAs)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {

@@ -25,7 +25,11 @@ namespace Tests
         [InlineData("xss.caatestsuite.com")] // Tests rejection when the issue property contains HTML and JavaScript. Makes sure there are no XSS vulnerabilities in the CA's website.
         public void TestGetCAARecord(string domain)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -44,7 +48,11 @@ namespace Tests
         [InlineData("refused.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a name server returning REFUSED
         public void TestGetCAARecordException(string domain)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -58,7 +66,11 @@ namespace Tests
         [InlineData("www.siemens.com")] // No CAA record set
         public void TestNoCAARecord(string domain)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -98,7 +110,11 @@ namespace Tests
         [InlineData("www.siemens.net")]
         public void TestGetSOARecord(string domain)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -117,7 +133,11 @@ namespace Tests
         [InlineData("refused.caatestsuite-dnssec.com")] // Tests rejection when there is a DNSSEC validation chain to a name server returning REFUSED
         public void TestGetSOARecordException(string domain)
         {
-            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(new DnsClient.LookupClient());
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            lookUpClient.EnableAuditTrail = true;
+            ////lookUpClient.ThrowDnsErrors = true;
+            lookUpClient.UseCache = false;
+            var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
             using (var scope = container.BeginLifetimeScope())
             {
