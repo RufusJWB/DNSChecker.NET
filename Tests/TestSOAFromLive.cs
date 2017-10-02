@@ -19,12 +19,8 @@ namespace Tests
 
         public void TestSOAOkay(string domain, string[] allowedSOAs)
         {
-            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
-            lookUpClient.EnableAuditTrail = true;
-           ////lookUpClient.ThrowDnsErrors = true;
-            lookUpClient.UseCache = false;
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient(DnsClient.NameServer.GooglePublicDns, DnsClient.NameServer.GooglePublicDnsIPv6, DnsClient.NameServer.GooglePublicDns2, DnsClient.NameServer.GooglePublicDns2IPv6);
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
-
             using (var scope = container.BeginLifetimeScope())
             {
                 var checker = scope.Resolve<DNSChecker.NET.Services.Checker.IChecker>();
@@ -47,12 +43,8 @@ namespace Tests
 
         public void TestSOANotOkay(string domain, string[] allowedSOAs)
         {
-            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
-            lookUpClient.EnableAuditTrail = true;
-           ////lookUpClient.ThrowDnsErrors = true;
-            lookUpClient.UseCache = false;
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient(DnsClient.NameServer.GooglePublicDns, DnsClient.NameServer.GooglePublicDnsIPv6, DnsClient.NameServer.GooglePublicDns2, DnsClient.NameServer.GooglePublicDns2IPv6);
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
-
             using (var scope = container.BeginLifetimeScope())
             {
                 var checker = scope.Resolve<DNSChecker.NET.Services.Checker.IChecker>();

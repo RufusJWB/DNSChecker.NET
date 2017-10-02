@@ -33,12 +33,8 @@ namespace Tests
 
         public void TestCAAOkay(string domain, string[] allowedCAAs)
         {
-            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
-            lookUpClient.EnableAuditTrail = true;
-            ////lookUpClient.ThrowDnsErrors = true;
-            lookUpClient.UseCache = false;
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient(DnsClient.NameServer.GooglePublicDns, DnsClient.NameServer.GooglePublicDnsIPv6, DnsClient.NameServer.GooglePublicDns2, DnsClient.NameServer.GooglePublicDns2IPv6);
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
-
             using (var scope = container.BeginLifetimeScope())
             {
                 var checker = scope.Resolve<DNSChecker.NET.Services.Checker.IChecker>();
@@ -88,12 +84,8 @@ namespace Tests
         [InlineData("db.perenaster.com", new object[] { "pki.goog" })]
         public void TestCAAForbidden(string domain, string[] allowedCAAs)
         {
-            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
-            lookUpClient.EnableAuditTrail = true;
-            ////lookUpClient.ThrowDnsErrors = true;
-            lookUpClient.UseCache = false;
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient(DnsClient.NameServer.GooglePublicDns, DnsClient.NameServer.GooglePublicDnsIPv6, DnsClient.NameServer.GooglePublicDns2, DnsClient.NameServer.GooglePublicDns2IPv6);
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
-
             using (var scope = container.BeginLifetimeScope())
             {
                 var checker = scope.Resolve<DNSChecker.NET.Services.Checker.IChecker>();
