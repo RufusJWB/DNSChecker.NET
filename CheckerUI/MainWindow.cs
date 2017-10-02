@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,19 +14,25 @@ namespace CheckerUI
 {
     public partial class MainWindow : Form
     {
+        private readonly SynchronizationContext synchronizationContext;
+
         public MainWindow()
         {
             InitializeComponent();
+            synchronizationContext = SynchronizationContext.Current;
         }
 
-        private void CheckDomains_Click(object sender, EventArgs e)
+        private async void CheckDomains_Click(object sender, EventArgs e)
         {
+            this.CheckResults.Text = "Starting check, will take some time, window will freeze";
+            this.Enabled = false;
+
             //todo: Check entries by syntax
             var allDomainsToCheck = this.DomainsToCheck.Text.Replace(" ", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             var allowedSOARecords = this.SOARecords.Text.Replace(" ", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             var allowedCAARecords = this.CAARecords.Text.Replace(" ", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
-            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient();
+            DnsClient.LookupClient lookUpClient = new DnsClient.LookupClient(DnsClient.NameServer.GooglePublicDns, DnsClient.NameServer.GooglePublicDnsIPv6, DnsClient.NameServer.GooglePublicDns2, DnsClient.NameServer.GooglePublicDns2IPv6);
 
             var container = DNSChecker.NET.Services.Helper.IoCBuilder.Container(lookUpClient);
 
@@ -33,17 +40,28 @@ namespace CheckerUI
             using (var scope = container.BeginLifetimeScope())
             {
                 var checker = scope.Resolve<DNSChecker.NET.Services.Checker.IChecker>();
-
-                foreach (var domain in allDomainsToCheck)
+                await Task.Run(() =>
                 {
-                    var resultCAA = checker.CAACheck(domain, allowedCAARecords);
-                    var resultSOA = checker.CAACheck(domain, allowedSOARecords);
-
-                    resultString += $"{domain} SOA:{resultSOA} / CAA:{resultCAA}" + System.Environment.NewLine;
-                }
+                    string totalMessage = string.Empty;
+                    foreach (var domain in allDomainsToCheck)
+                    {
+                        var resultCAA = checker.CAACheck(domain, allowedCAARecords);
+                        var resultSOA = checker.SOACheck(domain, allowedSOARecords);
+                        totalMessage += $"{domain} SOA:{resultSOA} / CAA:{resultCAA} ==> {((resultCAA && resultSOA) ? "Can issue" : "DON'T ISSUE")}" + System.Environment.NewLine;
+                        UpdateUI(totalMessage);
+                    }
+                });
             }
 
-            this.CheckResults.Text = resultString;
+            this.Enabled = true;
+        }
+
+        public void UpdateUI(string value)
+        {
+            synchronizationContext.Post(new SendOrPostCallback(o =>
+            {
+                this.CheckResults.Text = (string)o;
+            }), value);
         }
     }
 }
