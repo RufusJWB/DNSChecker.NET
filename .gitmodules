@@ -1,0 +1,4 @@
+[submodule "DnsClient.NET"]
+	path = DnsClient.NET
+	url = git@github.com:MichaCo/DnsClient.NET.git
+	branch = dev
