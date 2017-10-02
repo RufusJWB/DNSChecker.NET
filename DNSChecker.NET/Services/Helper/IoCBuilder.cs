@@ -6,6 +6,8 @@ namespace DNSChecker.NET.Services.Helper
     {
         public static IContainer Container(DnsClient.ILookupClient lookupClient)
         {
+            lookupClient.ThrowDnsErrors = false;
+
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance(lookupClient).As<DnsClient.ILookupClient>().SingleInstance();
